@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
-	"microblog/internal/service"
 	"net/http"
+
+	"microblog/internal/service"
+	"microblog/internal/models"
 
 	"github.com/gorilla/mux"
 )
@@ -54,7 +56,6 @@ func (h *Handlers) CreatePost(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handlers) GetPosts(w http.ResponseWriter, r *http.Request) {
 	posts := h.service.GetPosts()
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(posts)
 }
@@ -71,7 +72,7 @@ func (h *Handlers) LikePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	likeReq := service.LikeRequest{
+	likeReq := models.LikeRequest{
 		PostID: postID,
 		UserID: req.UserID,
 	}

@@ -2,6 +2,8 @@ package service
 
 import (
 	"testing"
+	"time"
+	"microblog/internal/models"
 )
 
 func TestService_Register(t *testing.T) {
@@ -112,9 +114,9 @@ func TestService_LikePost(t *testing.T) {
 		{"empty user_id", post.ID, "", true},
 	}
 
-	for _, tt := range tests {
+	for i, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			req := LikeRequest{
+			req := models.LikeRequest{ 
 				PostID: tt.postID,
 				UserID: tt.userID,
 			}
@@ -125,6 +127,31 @@ func TestService_LikePost(t *testing.T) {
 			}
 			if !tt.wantError && err != nil {
 				t.Errorf("unexpected error: %v", err)
+			}
+
+			if !tt.wantError {
+				time.Sleep(10 * time.Millisecond) //
+
+				posts := svc.GetPosts()
+				found := false
+				for _, p := range posts {
+					if p.ID == post.ID {
+						for _, like := range p.Likes {
+							if like == tt.userID {
+								found = true
+								break
+							}
+						}
+						break
+					}
+				}
+				if !found {
+					t.Errorf("like from %s was not added to post %s", tt.userID, post.ID)
+				}
+			}
+
+			if i == 0 {
+				time.Sleep(10 * time.Millisecond)
 			}
 		})
 	}
