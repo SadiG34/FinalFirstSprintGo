@@ -2,9 +2,11 @@ package main
 
 import (
 	"log"
+	"net/http"
+	_ "net/http/pprof"
+
 	"microblog/internal/handlers"
 	"microblog/internal/service"
-	"net/http"
 
 	"github.com/gorilla/mux"
 )

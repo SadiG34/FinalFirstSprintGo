@@ -1,0 +1,13 @@
+2026/01/28 16:25:36 [16:25:36] REGISTER: User user1 created with ID user_1
+2026/01/28 16:25:36 [16:25:36] REGISTER: User user1 created with ID user_1
+2026/01/28 16:25:36 [16:25:36] REGISTER: User author1 created with ID user_1
+2026/01/28 16:25:36 [16:25:36] POST_CREATED: Post post_1 by user_1
+2026/01/28 16:25:36 [16:25:36] REGISTER: User user2 created with ID user_2
+2026/01/28 16:25:36 [16:25:36] POST_CREATED: Post post_1 by user_1
+2026/01/28 16:25:36 [16:25:36] REGISTER: User user1 created with ID user_1
+2026/01/28 16:25:36 [16:25:36] LIKE: User user_2 liked post post_1
+2026/01/28 16:25:36 [16:25:36] POST_CREATED: Post post_1 by user_1
+2026/01/28 16:26:51 [16:26:51] REGISTER: User user1 created with ID user_1
+2026/01/28 16:26:51 [16:26:51] REGISTER: User user1 created with ID user_1
+2026/01/28 16:26:51 [16:26:51] REGISTER: User user1 created with ID user_1
+2026/01/28 16:26:51 [16:26:51] REGISTER: User author1 created with ID user_1

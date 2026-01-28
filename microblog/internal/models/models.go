@@ -20,9 +20,9 @@ type Post struct {
 }
 
 type Storage struct {
-	Users      map[string]*User
-	Posts      []*Post
-	UserIDSeq  int64
-	PostIDSeq  int64
-	Mu         sync.RWMutex
+	Users     map[string]*User
+	Posts     []*Post
+	UserIDSeq int64
+	PostIDSeq int64
+	Mu        sync.RWMutex
 }
