@@ -25,6 +25,10 @@ func (q *LikeQueue) Add(req models.LikeRequest) {
 	q.ch <- req
 }
 
+func (q *LikeQueue) Close() {
+	close(q.ch)
+}
+
 func (q *LikeQueue) worker() {
 	for req := range q.ch {
 		if err := q.processor(req); err != nil {

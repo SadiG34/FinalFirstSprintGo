@@ -11,3 +11,32 @@
 2026/01/28 16:26:51 [16:26:51] REGISTER: User user1 created with ID user_1
 2026/01/28 16:26:51 [16:26:51] REGISTER: User user1 created with ID user_1
 2026/01/28 16:26:51 [16:26:51] REGISTER: User author1 created with ID user_1
+2026/01/31 23:54:38 [23:54:38] REGISTER: User user1 created with ID user_1
+2026/01/31 23:54:38 [23:54:38] POST_CREATED: Post post_1 by user_1
+2026/01/31 23:54:38 [23:54:38] REGISTER: User user1 created with ID user_1
+2026/01/31 23:54:38 [23:54:38] REGISTER: User author1 created with ID user_1
+2026/01/31 23:54:38 [23:54:38] REGISTER: User user2 created with ID user_2
+2026/01/31 23:54:38 [23:54:38] REGISTER: User user1 created with ID user_1
+2026/01/31 23:54:38 [23:54:38] POST_CREATED: Post post_1 by user_1
+2026/01/31 23:54:38 [23:54:38] POST_CREATED: Post post_1 by user_1
+2026/01/31 23:54:38 [23:54:38] LIKE: User user_2 liked post post_1
+2026/01/31 23:54:38 [23:54:38] LIKE: Duplicate like ignored: user user_2, post post_1
+2026/01/31 23:55:00 [23:55:00] REGISTER: User user1 created with ID user_1
+2026/01/31 23:55:00 [23:55:00] REGISTER: User user1 created with ID user_1
+2026/01/31 23:55:00 [23:55:00] REGISTER: User author1 created with ID user_1
+2026/01/31 23:55:00 [23:55:00] POST_CREATED: Post post_1 by user_1
+2026/01/31 23:55:00 [23:55:00] POST_CREATED: Post post_1 by user_1
+2026/01/31 23:55:00 [23:55:00] REGISTER: User user1 created with ID user_1
+2026/01/31 23:55:00 [23:55:00] REGISTER: User user2 created with ID user_2
+2026/01/31 23:55:00 [23:55:00] POST_CREATED: Post post_1 by user_1
+2026/01/31 23:55:00 [23:55:00] LIKE: User user_2 liked post post_1
+2026/01/31 23:55:00 [23:55:00] LIKE: Duplicate like ignored: user user_2, post post_1
+2026/01/31 23:58:48 [23:58:48] REGISTER: User user1 created with ID user_1
+2026/01/31 23:58:48 [23:58:48] REGISTER: User author1 created with ID user_1
+2026/01/31 23:58:48 [23:58:48] POST_CREATED: Post post_1 by user_1
+2026/01/31 23:58:48 [23:58:48] REGISTER: User user1 created with ID user_1
+2026/01/31 23:58:48 [23:58:48] REGISTER: User user2 created with ID user_2
+2026/01/31 23:58:48 [23:58:48] POST_CREATED: Post post_1 by user_1
+2026/01/31 23:58:48 [23:58:48] LIKE: User user_2 liked post post_1
+2026/01/31 23:58:48 [23:58:48] REGISTER: User user1 created with ID user_1
+2026/01/31 23:58:48 [23:58:48] POST_CREATED: Post post_1 by user_1
