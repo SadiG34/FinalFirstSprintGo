@@ -8,6 +8,7 @@ import (
 
 func TestService_Register(t *testing.T) {
 	svc := NewService()
+	defer svc.Close()
 
 	tests := []struct {
 		name      string
@@ -21,7 +22,7 @@ func TestService_Register(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			req := RegisterRequest{Username: tt.username}
+			req := models.RegisterRequest{Username: tt.username}
 			_, err := svc.Register(req)
 
 			if tt.wantError && err == nil {
@@ -36,8 +37,9 @@ func TestService_Register(t *testing.T) {
 
 func TestService_CreatePost(t *testing.T) {
 	svc := NewService()
+	defer svc.Close()
 
-	user, _ := svc.Register(RegisterRequest{Username: "author1"})
+	user, _ := svc.Register(models.RegisterRequest{Username: "author1"})
 
 	tests := []struct {
 		name      string
@@ -53,7 +55,7 @@ func TestService_CreatePost(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			req := CreatePostRequest{
+			req := models.CreatePostRequest{
 				Author:  tt.author,
 				Content: tt.content,
 			}
@@ -71,14 +73,15 @@ func TestService_CreatePost(t *testing.T) {
 
 func TestService_GetPosts(t *testing.T) {
 	svc := NewService()
+	defer svc.Close()
 
 	posts := svc.GetPosts()
 	if len(posts) != 0 {
 		t.Errorf("expected 0 posts, got %d", len(posts))
 	}
 
-	user, _ := svc.Register(RegisterRequest{Username: "user1"})
-	svc.CreatePost(CreatePostRequest{
+	user, _ := svc.Register(models.RegisterRequest{Username: "user1"})
+	svc.CreatePost(models.CreatePostRequest{
 		Author:  user.ID,
 		Content: "Post 1",
 	})
@@ -91,11 +94,12 @@ func TestService_GetPosts(t *testing.T) {
 
 func TestService_LikePost(t *testing.T) {
 	svc := NewService()
+	defer svc.Close()
 
-	user1, _ := svc.Register(RegisterRequest{Username: "user1"})
-	user2, _ := svc.Register(RegisterRequest{Username: "user2"})
+	user1, _ := svc.Register(models.RegisterRequest{Username: "user1"})
+	user2, _ := svc.Register(models.RegisterRequest{Username: "user2"})
 
-	post, _ := svc.CreatePost(CreatePostRequest{
+	post, _ := svc.CreatePost(models.CreatePostRequest{
 		Author:  user1.ID,
 		Content: "Test post",
 	})
@@ -116,7 +120,7 @@ func TestService_LikePost(t *testing.T) {
 
 	for i, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			req := models.LikeRequest{ 
+			req := models.LikeRequest{
 				PostID: tt.postID,
 				UserID: tt.userID,
 			}
@@ -130,7 +134,7 @@ func TestService_LikePost(t *testing.T) {
 			}
 
 			if !tt.wantError {
-				time.Sleep(10 * time.Millisecond) //
+				time.Sleep(10 * time.Millisecond)
 
 				posts := svc.GetPosts()
 				found := false

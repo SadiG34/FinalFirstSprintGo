@@ -4,22 +4,22 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"microblog/internal/service"
 	"microblog/internal/models"
+	"microblog/internal/service"
 
 	"github.com/gorilla/mux"
 )
 
 type Handlers struct {
-	service *service.Service
+	service service.ServiceInterface
 }
 
-func NewHandlers(s *service.Service) *Handlers {
+func NewHandlers(s service.ServiceInterface) *Handlers {
 	return &Handlers{service: s}
 }
 
 func (h *Handlers) Register(w http.ResponseWriter, r *http.Request) {
-	var req service.RegisterRequest
+	var req models.RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid request body", http.StatusBadRequest)
 		return
@@ -37,7 +37,7 @@ func (h *Handlers) Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handlers) CreatePost(w http.ResponseWriter, r *http.Request) {
-	var req service.CreatePostRequest
+	var req models.CreatePostRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid request body", http.StatusBadRequest)
 		return
@@ -81,7 +81,6 @@ func (h *Handlers) LikePost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
 	w.WriteHeader(http.StatusOK)
 }
 

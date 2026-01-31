@@ -3,12 +3,12 @@ package service
 import (
 	"errors"
 	"fmt"
-	"time"
 	"sync/atomic"
+	"time"
 
+	"microblog/internal/logger"
 	"microblog/internal/models"
 	"microblog/internal/queue"
-	"microblog/internal/logger"
 )
 
 type Service struct {
@@ -17,18 +17,29 @@ type Service struct {
 	eventLogger *logger.EventLogger
 }
 
+type ServiceInterface interface {
+	Register(req models.RegisterRequest) (*RegisterResponse, error)
+	CreatePost(req models.CreatePostRequest) (*CreatePostResponse, error)
+	GetPosts() []PostResponse
+	LikePost(req models.LikeRequest) error
+	Close()
+}
+
 func NewService() *Service {
 	s := &Service{
 		storage: &models.Storage{
-			Users:     make(map[string]*models.User),
-			Posts:     make([]*models.Post, 0),
-			UserIDSeq: 0,
-			PostIDSeq: 0,
+			Users: make(map[string]*models.User),
+			Posts: make([]*models.Post, 0),
 		},
 		eventLogger: logger.NewEventLogger(),
 	}
 	s.likeQueue = queue.NewLikeQueue(s.processLike)
 	return s
+}
+
+func (s *Service) Close() {
+	s.likeQueue.Close()
+	s.eventLogger.Close()
 }
 
 func (s *Service) processLike(req models.LikeRequest) error {
@@ -37,11 +48,6 @@ func (s *Service) processLike(req models.LikeRequest) error {
 
 	for _, post := range s.storage.Posts {
 		if post.ID == req.PostID {
-			for _, like := range post.Likes {
-				if like == req.UserID {
-					return nil // уже лайкал
-				}
-			}
 			post.Likes = append(post.Likes, req.UserID)
 			s.eventLogger.Log("LIKE", fmt.Sprintf("User %s liked post %s", req.UserID, req.PostID))
 			return nil
@@ -50,16 +56,12 @@ func (s *Service) processLike(req models.LikeRequest) error {
 	return errors.New("post not found")
 }
 
-type RegisterRequest struct {
-	Username string `json:"username"`
-}
-
 type RegisterResponse struct {
 	ID       string `json:"id"`
 	Username string `json:"username"`
 }
 
-func (s *Service) Register(req RegisterRequest) (*RegisterResponse, error) {
+func (s *Service) Register(req models.RegisterRequest) (*RegisterResponse, error) {
 	if req.Username == "" {
 		return nil, errors.New("username is required")
 	}
@@ -89,18 +91,13 @@ func (s *Service) Register(req RegisterRequest) (*RegisterResponse, error) {
 	}, nil
 }
 
-type CreatePostRequest struct {
-	Author  string `json:"author"`
-	Content string `json:"content"`
-}
-
 type CreatePostResponse struct {
 	ID      string `json:"id"`
 	Author  string `json:"author"`
 	Content string `json:"content"`
 }
 
-func (s *Service) CreatePost(req CreatePostRequest) (*CreatePostResponse, error) {
+func (s *Service) CreatePost(req models.CreatePostRequest) (*CreatePostResponse, error) {
 	if req.Author == "" {
 		return nil, errors.New("author is required")
 	}
@@ -164,15 +161,12 @@ func (s *Service) GetPosts() []PostResponse {
 }
 
 func (s *Service) LikePost(req models.LikeRequest) error {
-	if req.PostID == "" {
-		return errors.New("post_id is required")
-	}
-	if req.UserID == "" {
-		return errors.New("user_id is required")
+	if req.PostID == "" || req.UserID == "" {
+		return errors.New("post_id and user_id are required")
 	}
 
 	s.storage.Mu.RLock()
-	_, userExists := s.storage.Users[req.UserID]
+	userExists := s.storage.Users[req.UserID] != nil
 	postExists := false
 	alreadyLiked := false
 
